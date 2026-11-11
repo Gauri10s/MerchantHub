@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MerchantHub — Payments, made clear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div id="authView" class="auth-shell">
+    <div class="auth-brand"><div class="brand-mark">M</div><span>MerchantHub</span></div>
+    <div class="auth-card">
+      <div class="eyebrow">MERCHANT WORKSPACE</div>
+      <h1 id="authTitle">Welcome back</h1><p class="muted" id="authSubtitle">Sign in to manage your payments.</p>
+      <form id="authForm">
+        <div id="registerFields" class="hidden">
+          <label>Business name<input name="businessName" placeholder="e.g. Northstar Studio" required></label>
+          <label>Your name<input name="ownerName" placeholder="Full name" required></label>
+        </div>
+        <label>Email address<input name="email" type="email" placeholder="you@business.com" required></label>
+        <label>Password<input name="password" type="password" minlength="8" placeholder="At least 8 characters" required></label>
+        <button class="btn primary full" id="authSubmit">Sign in</button>
+      </form>
+      <p class="auth-switch"><span id="authSwitchText">New to MerchantHub?</span> <button class="text-btn" id="authToggle">Create an account</button></p>
+      <p class="tiny muted">Demo application only. No real money is processed.</p>
+      <div id="authError" class="notice error hidden"></div>
+    </div>
+  </div>
+
+  <div id="appView" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="side-brand"><div class="brand-mark">M</div><span>MerchantHub</span></div>
+      <div class="side-label">WORKSPACE</div>
+      <nav>
+        <button class="nav-item active" data-page="dashboard"><span>▦</span> Overview</button>
+        <button class="nav-item" data-page="payments"><span>↗</span> Payments</button>
+        <button class="nav-item" data-page="refunds"><span>↩</span> Refunds</button>
+        <button class="nav-item" data-page="analytics"><span>▥</span> Analytics</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="profile-mini"><div class="avatar" id="avatar">M</div><div><strong id="sideBusiness">My business</strong><small id="sideEmail">merchant@email.com</small></div></div>
+        <button class="nav-item logout" id="logoutBtn"><span>↪</span> Sign out</button>
+      </div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div><div class="eyebrow">MERCHANT WORKSPACE</div><h2 id="pageTitle">Overview</h2></div><div class="top-right"><span class="live-dot"></span><span>Demo environment</span><div class="avatar" id="topAvatar">M</div></div></header>
+      <section id="page-dashboard" class="page">
+        <div class="welcome-row"><div><h1>Good business starts here.</h1><p class="muted">Here's what's happening with your payments.</p></div><button class="btn primary" data-action="new-payment">＋ Create payment</button></div>
+        <div class="stats-grid">
+          <article class="stat-card"><span class="stat-label">Gross collected</span><strong id="grossCollected">₹0.00</strong><small class="positive">Successful payments</small></article>
+          <article class="stat-card"><span class="stat-label">Transactions</span><strong id="totalTransactions">0</strong><small class="muted">All payment requests</small></article>
+          <article class="stat-card"><span class="stat-label">Pending</span><strong id="pendingCount">0</strong><small class="muted">Awaiting customer action</small></article>
+          <article class="stat-card"><span class="stat-label">Refunded</span><strong id="refundedTotal">₹0.00</strong><small class="muted">Total refunds recorded</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel chart-panel"><div class="panel-heading"><div><h3>Payment activity</h3><p class="muted">Successful collections · Last 7 days</p></div><span class="pill">7 days</span></div><div id="chart" class="chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><h3>Payment status</h3><p class="muted">All-time breakdown</p></div></div><div class="status-list" id="statusList"></div></article>
+        </div>
+        <article class="panel table-panel"><div class="panel-heading"><div><h3>Recent payments</h3><p class="muted">Your latest customer activity</p></div><button class="text-btn" data-page="payments">View all →</button></div><div id="recentTable"></div></article>
+      </section>
+
+      <section id="page-payments" class="page hidden">
+        <div class="page-actions"><div><h1>Payments</h1><p class="muted">Create payment links and track customer payments.</p></div><button class="btn primary" data-action="new-payment">＋ Create payment</button></div>
+        <div class="panel table-panel"><div class="toolbar"><input id="paymentSearch" placeholder="Search customer, ID or description…"><select id="paymentStatus"><option value="">All statuses</option><option>SUCCESS</option><option>PENDING</option><option>FAILED</option><option>REFUNDED</option><option>PARTIALLY_REFUNDED</option></select><button class="btn secondary" id="exportBtn">↓ Export CSV</button></div><div id="paymentsTable"></div><div class="pagination"><button class="btn secondary small" id="prevPage">Previous</button><span id="pageInfo" class="muted"></span><button class="btn secondary small" id="nextPage">Next</button></div></div>
+      </section>
+
+      <section id="page-refunds" class="page hidden"><div class="page-actions"><div><h1>Refunds</h1><p class="muted">Review refunds issued against your payments.</p></div></div><article class="panel table-panel"><div id="refundsTable"></div></article></section>
+
+      <section id="page-analytics" class="page hidden"><div class="page-actions"><div><h1>Analytics</h1><p class="muted">Understand your payment performance.</p></div><button class="btn secondary" id="exportBtn2">↓ Export payments</button></div><div class="stats-grid"><article class="stat-card"><span class="stat-label">Successful</span><strong id="aSuccess">0</strong></article><article class="stat-card"><span class="stat-label">Failed</span><strong id="aFailed">0</strong></article><article class="stat-card"><span class="stat-label">Pending</span><strong id="aPending">0</strong></article><article class="stat-card"><span class="stat-label">Gross collected</span><strong id="aGross">₹0.00</strong></article></div><article class="panel"><h3>Collection trend</h3><p class="muted">Daily successful payment totals for the last 7 days.</p><div id="analyticsChart" class="chart large-chart"></div></article></section>
+    </main>
+  </div>
+
+  <dialog id="paymentDialog" class="modal">
+    <form id="paymentForm" method="dialog">
+      <div class="modal-head"><div><div class="eyebrow">NEW PAYMENT REQUEST</div><h2>Create a payment link</h2></div><button type="button" class="close-btn" data-close="paymentDialog">×</button></div>
+      <label>Customer name<input name="customerName" required placeholder="Customer's name"></label>
+      <label>Customer email <span class="muted">(optional)</span><input name="customerEmail" type="email" placeholder="customer@example.com"></label>
+      <label>Description<input name="description" required placeholder="e.g. Website design — invoice 104"></label>
+      <label>Amount (INR)<input name="amount" type="number" min="1" max="10000000" step="0.01" required placeholder="2500.00"></label>
+      <div id="paymentError" class="notice error hidden"></div>
+      <button class="btn primary full">Generate payment link</button>
+    </form>
+  </dialog>
+
+  <dialog id="linkDialog" class="modal">
+    <div class="modal-head"><div><div class="eyebrow">PAYMENT LINK CREATED</div><h2>Share with your customer</h2></div><button class="close-btn" data-close="linkDialog">×</button></div>
+    <p class="muted">This demo checkout simulates a payment. It does not collect card details.</p>
+    <div class="copy-row"><input id="generatedLink" readonly><button class="btn secondary" id="copyLink">Copy</button></div>
+    <a class="btn primary full anchor-btn" id="openCheckout" target="_blank">Open demo checkout ↗</a>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
